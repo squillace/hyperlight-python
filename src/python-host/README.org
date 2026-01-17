@@ -1,0 +1,15 @@
+* Python Runtime binary for Rust projects using MicroPython
+
+  This crate uses the MicroPython bindings to the C API to provide a Python runtime
+  binary that is run in a hyperlight sandbox to provide safe execution of Python code.
+
+  To better interface with the MicroPython unsafe bindings from the `micropython-lib` crate,
+  this crate exposes the `MicroPython` struct that provides safe methods to initialize the interpreter
+  and execute Python code.
+  Note: When the interpreter is dropped, it is deinitialized, so make sure to keep it alive
+  as long as you need to run Python code.
+
+  This crate adds the following guest functions that can be used by the host to interact with
+  the MicroPython runtime:
+  - `python_init`: Initialize the MicroPython interpreter with a given heap and stack.
+  - `python_exec`: Execute a Python script provided as a null-terminated string.

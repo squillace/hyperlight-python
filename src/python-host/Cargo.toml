@@ -1,0 +1,28 @@
+[package]
+name = "python-host"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+
+[[bin]]
+name = "python-host"
+harness = false
+test = false
+
+[dependencies]
+hyperlight-common = { version = "0.12.0", default-features = false }
+hyperlight-guest-bin = { version = "0.12.0" }
+hyperlight-guest = { version = "0.12.0" }
+micropython-lib = { path = "../micropython-lib" }
+spin = "0.10.0"
+
+[workspace]
+
+[features]
+default = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

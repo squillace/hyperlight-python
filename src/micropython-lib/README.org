@@ -1,0 +1,75 @@
+* Micropython Library
+  This rust crate provides bindings for the MicroPython C API, allowing Rust code to interface with MicroPython.
+  This enables only part of the MicroPython functionality to be used within Rust applications.
+  The `build.rs` script is frozen to the `v1.27.0` version of MicroPython, the latest stable release as of Jan 2026.
+
+** Features
+   At this time, the crate only enables a minimal set of features for the MicroPython runtime before building it.
+   Only the core functionality is enabled (memory management, object model, basic types, and execution engine).
+   Additional features may be added in the future based on demand (for example, enabling specific modules).
+   To check the enabled features, refer to the [[file:./stubs/include/mpconfigport.h][Config file]] file in the crate source.
+
+   The main features of this crate include:
+   - Safe and idiomatic Rust wrappers around MicroPython C functions.
+   - Support for embedding MicroPython in Rust applications.
+
+** Installation
+   This crate is only available in this repository for now.
+   It is used in other projects via path dependencies.
+ 
+   Add the following to your Cargo.toml:
+   #+NAME: Cargo.toml Dependency
+   #+BEGIN_SRC toml
+   [dependencies]
+   micropython-lib = { path = "../micropython-lib" }
+   #+END_SRC
+
+** Usage
+   Here is a simple example of how to use the `micropython-lib` crate in your Rust project:
+
+   #+NAME: Usage Example
+   #+BEGIN_SRC rust
+   use micropython_lib::{MpInterpreter, MpObject, MpResult};
+
+   /// Heap memory for MicroPython (interpreter)
+   static mut MP_HEAP: [0u8; 4096] = [0; 4096];
+
+   fn main() -> MpResult<()> {
+       // Initialize the MicroPython interpreter
+       {
+         let heap_ptr = guard.as_mut_ptr() as *mut c_void;
+         let heap_size = guard.capacity();
+
+         // Use the address of a local variable as stack top estimate
+         let mut stack_marker: usize = 0;
+         let stack_ptr = &mut stack_marker as *mut usize as *mut c_void;
+
+         unsafe {
+             micropython_lib::mp_embed_init(heap_ptr, heap_size, stack_ptr);
+         }
+       }
+
+       // Execute a simple Python script
+       let script = "print('Hello from MicroPython!')";
+       {
+          // We need to ensure the string is null-terminated for C
+          // Since we're in no_std, we'll use a stack buffer
+          let mut buf = String::with_capacity(script.len() + 1);
+
+          buf.push_str(script);
+          buf.push('\0');
+
+          // Execute the script
+          unsafe {
+              micropython_lib::mp_embed_exec_str(buf.as_ptr() as *const core::ffi::c_char);
+          }
+       }
+
+       // Deinitialize the MicroPython interpreter
+       unsafe {
+           micropython_lib::mp_embed_deinit();
+       }
+
+       Ok(())
+   }
+   #+END_SRC

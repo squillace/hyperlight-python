@@ -1,0 +1,13 @@
+[package]
+name = "micropython-lib"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+
+[dependencies]
+# get hyperlight-guest header files
+hyperlight-guest-bin = { version = "0.12" }
+
+[build-dependencies]
+cc = "1.2"
+bindgen = "0.72"

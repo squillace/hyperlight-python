@@ -1,0 +1,40 @@
+[package]
+name = "hyperlight-python"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+include = [
+  "*",
+  "vendor.tar",
+]
+
+[dependencies]
+hyperlight-host = { workspace = true }
+
+[build-dependencies]
+cargo-hyperlight = "0.1.5"
+tar = "0.4.44"
+
+[dev-dependencies]
+
+[features]
+default = ["kvm", "mshv3"]
+gdb = ["hyperlight-host/gdb"]
+kvm = ["hyperlight-host/kvm"]
+mshv3 = ["hyperlight-host/mshv3"]
+
+[[example]]
+name = "class"
+path = "examples/class/main.rs"
+test = false
+
+[[example]]
+name = "function"
+path = "examples/function/main.rs"
+test = false
+
+[[example]]
+name = "hello-world"
+path = "examples/hello-world/main.rs"
+test = false
+

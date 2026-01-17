@@ -1,0 +1,50 @@
+* Hyperlight Python SDK
+
+  This crate provides a set of utility functions and types to facilitate the development of
+  Python applications running in the Hyperlight sandbox environment.
+  It builds upon the exposed guest functions from the `python-host` crate to extend the functionality
+  of a conventional hyperlight sandbox with Python execution capabilities.
+
+  The main features of this crate include:
+  - Embeds the `python-host` binary into a hyperlight sandbox
+  - Calls the exposed guest functions to initialize and execute Python code
+  - Provides Rust types and utilities to manage Python execution within the sandbox:
+    - `ProtoPySandbox`: A struct representing a Hyperlight sandbox without any special capabilities.
+    - `PySandbox`: A struct representing a Hyperlight sandbox with Python runtime loaded.
+    - `LoadedPySandbox`: A struct representing a Hyperlight sandbox with Python runtime loaded and initialized.
+      This can execute Python code.
+
+** Usage
+  To use this crate, add the following to your Cargo.toml:
+  #+NAME: Cargo.toml Dependency
+  #+BEGIN_SRC toml
+  [dependencies]
+  hyperlight-python = { git = "https://github.com/dblnz/hyperlight-python.git", branch = "main", version = "0.1.0" }
+  #+END_SRC
+
+** Example
+  Here is a simple example of how to use the `hyperlight-python` crate to create a sandbox
+  and execute a Python script within it:
+
+  #+NAME: Usage Example
+  #+BEGIN_SRC rust
+  use hyperlight_python::sandbox::SandboxBuilder;
+
+  fn main() -> hyperlight_host::Result<()> {
+      // Create a ProtoPySandbox 
+      let proto_sbox = SandboxBuilder::new().build();
+
+      // Load the runtime into the ProtoPySandbox yielding a PySandbox
+      let py_sbox = proto_sbox.load_runtime()?;
+
+      // Get the loaded Python sandbox
+      let loaded_sbox = py_sbox.get_loaded_sandbox()?;
+
+      // Execute a simple Python script
+      let script = "print('Hello from Hyperlight Python!')".to_string();
+      let success = loaded_sbox.ru_script(script)?;
+      assert!(success);
+
+      Ok(())
+  }
+  #+END_SRC

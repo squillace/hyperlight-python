@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = ["src/hyperlight-python"]
+exclude = [
+  "src/python-host", "src/micropython-lib",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.89"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+hyperlight-common = { version = "0.12", default-features = false }
+hyperlight-guest = { version = "0.12" }
+hyperlight-host = { version = "0.12", default-features = false, features = ["executable_heap", "init-paging"]}
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

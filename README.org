@@ -1,0 +1,55 @@
+* Hyperlight-Python
+
+** Overview
+  This project provides a [[https://github.com/hyperlight-dev/hyperlight][Hyperlight]] sandbox that runs Python code.
+  It leverages the MicroPython C API bindings from the `micropython-lib` crate to embed
+  a Python runtime within a Hyperlight sandbox environment.
+
+  The main components of this project include:
+  - A Hyperlight sandbox binary that includes the MicroPython runtime.
+  - Hyperlight host types that extend the functionality of a standard Hyperlight sandbox
+    to support Python code execution.
+  - Guest functions to initialize the MicroPython interpreter and execute Python scripts.
+
+** Host
+  #+NAME: Host Example
+  #+BEGIN_SRC rust
+  use hyperlight_python::sandbox::SandboxBuilder;
+
+  fn main() -> hyperlight_host::Result<()> {
+      let proto_sbox = SandboxBuilder::new().build()?;
+
+      let code = r"print('Hello from Python sandbox!')".to_string();
+
+      let sandbox = proto_sbox.load_runtime()?;
+      let mut sandbox = sandbox.get_loaded_sandbox()?;
+
+      let success = sandbox.run_script(code)?;
+      assert!(success);
+      Ok(())
+  }
+  #+END_SRC
+
+** Repository structure
+  This repository contains three main crates:
+  - `hyperlight-python`: Hyperlight host types and utilities to manage Python execution within a sandbox.
+  - `micropython-lib`: Provides Rust bindings for the MicroPython C API.
+  - `python-host`: A Hyperlight sandbox binary that includes the MicroPython runtime.
+
+** Try it yourself
+  To run the example code, you need to have the following prerequisites installed:
+   - Rust toolchain (https://www.rust-lang.org/tools/install)
+   - Cargo (comes with Rust)
+   - [[https://github.com/casey/just][just]] (can install via `cargo install just`)
+   - [[https://clang.llvm.org/get_started.html][clang and LLVM]]
+
+  You can clone the repository and run the example code above.
+
+  #+BEGIN_SRC shell
+  git clone https://github.com/dblnz/hyperlight-python.git
+  cd hyperlight-python
+  cargo run --example hello-world
+   #+END_SRC
+
+** Or you can use a codespace
+[[https://codespaces.new/dblnz/hyperlight-python][  Open in Codespace ]]
