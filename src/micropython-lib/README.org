@@ -1,5 +1,5 @@
 * Micropython Library
-  This rust crate provides bindings for the MicroPython C API, allowing Rust code to interface with MicroPython.
+  This rust crate provides bindings for the [[https://github.com/micropython/micropython][MicroPython]] C API, allowing Rust code to interface with MicroPython.
   This enables only part of the MicroPython functionality to be used within Rust applications.
   The `build.rs` script is frozen to the `v1.27.0` version of MicroPython, the latest stable release as of Jan 2026.
 

@@ -2,7 +2,7 @@
 
 ** Overview
   This project provides a [[https://github.com/hyperlight-dev/hyperlight][Hyperlight]] sandbox that runs Python code.
-  It leverages the MicroPython C API bindings from the `micropython-lib` crate to embed
+  It leverages the [[https://github.com/micropython/micropython][MicroPython]] C API bindings from the `micropython-lib` crate to embed
   a Python runtime within a Hyperlight sandbox environment.
 
   The main components of this project include:
