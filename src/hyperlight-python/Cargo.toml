@@ -34,6 +34,11 @@ path = "examples/function/main.rs"
 test = false
 
 [[example]]
+name = "guest-debugging"
+path = "examples/guest-debugging/main.rs"
+test = false
+
+[[example]]
 name = "hello-world"
 path = "examples/hello-world/main.rs"
 test = false

@@ -45,11 +45,27 @@
 
   You can clone the repository and run the example code above.
 
+  #+NAME: Clone
   #+BEGIN_SRC shell
   git clone https://github.com/dblnz/hyperlight-python.git
   cd hyperlight-python
+   #+END_SRC
+
+  Run the hello-world example:
+  #+NAME: Run hello-world example
+  #+BEGIN_SRC shell
   cargo run --example hello-world
    #+END_SRC
+
+  Or, to see what's inside the sandbox, you can run:
+  #+NAME: Debug hello-world example
+  #+BEGIN_SRC shell
+  cargo run --example guest-debugging --features gdb
+  #+END_SRC
+
+  .. and, attach to port 8080 using gdb or lldb from another terminal or from VSCode or from codespaces.
+  NOTE: The `python-host` binary path is printed when you run the example with `--features gdb`.
+   You use that path with the debugger to attach to the running sandbox process.
 
 ** Or you can use a codespace
 [[https://codespaces.new/dblnz/hyperlight-python][  Open in Codespace ]]
