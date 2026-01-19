@@ -1,0 +1,72 @@
+{
+  "version": "0.2.0",
+  "inputs": [
+    {
+      "id": "program",
+      "type": "promptString",
+      "default": "./src/tests/rust_guests/bin/debug/simpleguest",
+      "description": "Path to the program to debug"
+    }
+  ],
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug example 'hello-world'",
+      "cargo": {
+        "args": [
+          "build",
+          "--example=hello-world",
+          "--package=hyperlight-pyhton"
+        ],
+        "filter": {
+          "name": "hello-world",
+          "kind": "example"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Remote LLDB attach",
+      "type": "lldb",
+      "request": "launch",
+      "targetCreateCommands": [
+        "target create ${input:program}"
+      ],
+      "processCreateCommands": [
+        "gdb-remote localhost:8080"
+      ]
+    },
+    {
+      "name": "Remote GDB attach",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${input:program}",
+      "args": [],
+      "stopAtEntry": true,
+      "hardwareBreakpoints": {
+        "require": false,
+        "limit": 4
+      },
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "miDebuggerServerAddress": "localhost:8080",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
